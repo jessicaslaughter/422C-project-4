@@ -103,7 +103,23 @@ public abstract class Critter {
 		this.moveCritter(direction, 2);
 	}
 	
+	/**
+	 * This method determines whether a parent reproduces,
+	 * and if so, sets the offspring's energy and position
+	 * and halves the parent's energy.
+	 * @param offspring is the new Critter
+	 * @param direction is the direction the offspring should be placed from the parent
+	 */
 	protected final void reproduce(Critter offspring, int direction) {
+		if (this.energy < Params.min_reproduce_energy) {
+			return; // not enough energy
+		}
+		offspring.energy = this.energy / 2; // round down
+		this.energy = this.energy / 2 + this.energy % 2; // round up
+		offspring.x_coord = this.x_coord;
+		offspring.y_coord = this.y_coord;
+		offspring.moveCritter(direction, 1); // move offspring adjacent to parent
+		babies.add(offspring);
 	}
 
 	public abstract void doTimeStep();
@@ -240,6 +256,12 @@ public abstract class Critter {
 				population.remove(crit);		//delete dead critters
 			}
 		}
+		
+		// needs to be last step
+		for (Critter baby : babies) {
+			population.add(baby); // add all babies to population
+		}
+		babies.clear();
 	}
 	
 	public static void displayWorld() {
