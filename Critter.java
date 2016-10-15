@@ -93,14 +93,24 @@ public abstract class Critter {
 		}
 	}
 	
+	private boolean hasMoved; // true if Critter has moved in this time step
+	
 	protected final void walk(int direction) {
 		this.energy = this.energy - Params.walk_energy_cost;
+		if (hasMoved) {
+			return;
+		}
 		this.moveCritter(direction, 1);
+		hasMoved = true;
 	}
 	
 	protected final void run(int direction) {
 		this.energy = this.energy - Params.run_energy_cost;
+		if (hasMoved) {
+			return;
+		}
 		this.moveCritter(direction, 2);
+		hasMoved = true;
 	}
 	
 	/**
@@ -160,7 +170,18 @@ public abstract class Critter {
 	 */
 	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
 		List<Critter> result = new java.util.ArrayList<Critter>();
-	
+		try { 
+			Class<?> c = Class.forName(myPackage + "." + critter_class_name);
+			
+			for (Critter crit : population) {
+				if (crit instanceof c) { // need to fix this
+					result.add(crit);
+				}
+			}
+		}
+		catch(InvalidCritterException exception) {
+			throw new InvalidCritterException(critter_class_name);
+		}
 		return result;
 	}
 	
@@ -244,6 +265,8 @@ public abstract class Critter {
 	 * Clear the world of all critters, dead and alive
 	 */
 	public static void clearWorld() {
+		population.clear();
+		babies.clear();
 	}
 	
 	public static void worldTimeStep() {
@@ -257,11 +280,11 @@ public abstract class Critter {
 			}
 		}
 		
-		// needs to be last step
-		for (Critter baby : babies) {
-			population.add(baby); // add all babies to population
-		}
+		population.addAll(babies);
 		babies.clear();
+		for (Critter crit : population) {
+			crit.hasMoved = false; // reset movement tracker
+		}
 	}
 	
 	public static void displayWorld() {
