@@ -127,6 +127,20 @@ public abstract class Critter {
 		//random position
 		newCraig.x_coord = Critter.getRandomInt(Params.world_width-1);
 		newCraig.y_coord = Critter.getRandomInt(Params.world_height - 1);
+		try{
+			//need to check input first
+			Critter c = (Critter) Class.forName(myPackage + "." + critter_class_name).newInstance();
+			//add to the collection
+			Critter.population.add(c);
+			//energy
+			c.energy=Params.start_energy;
+			//random position
+			c.x_coord = Critter.getRandomInt(Params.world_width);
+			c.y_coord = Critter.getRandomInt(Params.world_height);
+		}
+		catch(ClassNotFoundException|InstantiationException|IllegalAccessException exception){
+			throw new InvalidCritterException(critter_class_name);
+		}
 	}
 	
 	/**
