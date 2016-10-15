@@ -119,14 +119,6 @@ public abstract class Critter {
 	 * @throws InvalidCritterException
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
-		//need to check input first
-		Class c = Class.forName(myPackage + ".Craig");
-		Critter newCraig = (Critter)c.newInstance(); 
-		//add to the collection
-		Critter.population.add(newCraig);
-		//random position
-		newCraig.x_coord = Critter.getRandomInt(Params.world_width-1);
-		newCraig.y_coord = Critter.getRandomInt(Params.world_height - 1);
 		try{
 			//need to check input first
 			Critter c = (Critter) Class.forName(myPackage + "." + critter_class_name).newInstance();
@@ -249,5 +241,36 @@ public abstract class Critter {
 		}
 	}
 	
-	public static void displayWorld() {}
+	public static void displayWorld() {
+		// top border
+		System.out.print("+");
+		for (int i = 0; i < Params.world_width; i++) {
+			System.out.print("-");
+		}
+		System.out.println("+");
+		
+		// rows
+		for (int y = 0; y < Params.world_height; y++) {
+			System.out.print("|");
+			for (int x = 0; x < Params.world_width; x++) {
+				String space = " ";
+				for (Critter crit : population) {
+					if (crit.x_coord == x && crit.y_coord == y) { // position occupied
+						System.out.print(crit.toString());
+						space = "";
+					}
+					break;
+				}
+				System.out.print(space);
+			}
+			System.out.println("|");
+		}
+		
+		// bottom border
+		System.out.print("+");
+		for (int i = 0; i < Params.world_width; i++) {
+			System.out.print("-");
+		}
+		System.out.println("+");
+	}
 }
