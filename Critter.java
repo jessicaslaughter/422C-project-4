@@ -1,12 +1,11 @@
 /* CRITTERS Critter.java
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
- * <Student1 Name>
+ * Gina Lu
  * <Student1 EID>
  * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * Jessica Slaughter
+ * jts3329
+ * 16470
  * Slip days used: <0>
  * Fall 2016
  */
@@ -24,7 +23,6 @@ public abstract class Critter {
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
-	//public static List<Critter> worldSpace;
 	
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
@@ -50,7 +48,54 @@ public abstract class Critter {
 	private int x_coord;
 	private int y_coord;
 	
+	/**
+	 * This private method moves a critter in a specified direction
+	 * for a specified number of steps.
+	 * @param direction is the direction to be moved in (0-7)
+	 * @param numSteps is the number of steps to take in the direction
+	 */
+	private void moveCritter(int direction, int numSteps) {
+		switch (direction) {
+			case 0: this.x_coord = this.x_coord + numSteps;
+					break;
+			case 1: this.x_coord = this.x_coord + numSteps;
+					this.y_coord = this.y_coord - numSteps;
+					break;
+			case 2: this.y_coord = this.y_coord - numSteps;
+					break;
+			case 3: this.x_coord = this.x_coord - numSteps;
+					this.y_coord = this.y_coord - numSteps;
+					break;
+			case 4: this.x_coord = this.x_coord - numSteps;
+					break;
+			case 5: this.x_coord = this.x_coord - numSteps;
+					this.y_coord = this.y_coord + numSteps;
+					break;
+			case 6: this.y_coord = this.y_coord + numSteps;
+					break;
+			case 7: this.x_coord = this.x_coord + numSteps;
+					this.y_coord = this.y_coord + numSteps;
+					break;
+			default: break;
+		}
+		
+		if (this.x_coord > Params.world_width - 1) { // relocate to left side
+			this.x_coord = this.x_coord - Params.world_width;
+		}
+		else if (this.x_coord < 0) { // relocate to right side
+			this.x_coord = this.x_coord + Params.world_width;
+		}
+		if (this.y_coord > Params.world_height - 1) { // relocate to top
+			this.y_coord = this.y_coord - Params.world_height;
+		}
+		else if (this.y_coord < 0) { // relocate to bottom
+			this.y_coord = this.y_coord + Params.world_height;
+		}
+	}
+	
 	protected final void walk(int direction) {
+		this.energy = this.energy - Params.walk_energy_cost;
+		this.moveCritter(direction, 1);
 	}
 	
 	protected final void run(int direction) {
@@ -76,9 +121,9 @@ public abstract class Critter {
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
 		//need to check input first
 		Class c = Class.forName(myPackage + ".Craig");
-		Critter newCraig = (Critter)c.newInstance();
+		Critter newCraig = (Critter)c.newInstance(); 
 		//add to the collection
-		Critter.worldSpace.add(newCraig);
+		Critter.population.add(newCraig);
 		//random position
 		newCraig.x_coord = Critter.getRandomInt(Params.world_width-1);
 		newCraig.y_coord = Critter.getRandomInt(Params.world_height - 1);
