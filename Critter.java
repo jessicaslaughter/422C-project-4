@@ -78,7 +78,7 @@ public abstract class Critter {
 		Class c = Class.forName(myPackage + ".Craig");
 		Critter newCraig = (Critter)c.newInstance();
 		//add to the collection
-		Critter.worldSpace.add(newCraig);
+		Critter.population.add(newCraig);
 		//random position
 		newCraig.x_coord = Critter.getRandomInt(Params.world_width-1);
 		newCraig.y_coord = Critter.getRandomInt(Params.world_height - 1);
