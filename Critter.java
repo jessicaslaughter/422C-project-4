@@ -99,7 +99,8 @@ public abstract class Critter {
 	}
 	
 	protected final void run(int direction) {
-		
+		this.energy = this.energy - Params.run_energy_cost;
+		this.moveCritter(direction, 2);
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
