@@ -46,5 +46,29 @@ public class Critter2 extends Critter {
 		}
 		return true;
 	}
+	
+	public static void runStats(java.util.List<Critter> twos) {
+		int avgAge = 0;
+		int maxAge = 0;
+		int minAge = -1;
+		for (Object obj : twos) {
+			Critter2 c = (Critter2) obj;
+			if (minAge == -1) {
+				minAge = c.age;
+			}
+			avgAge += c.age;
+			if (c.age < minAge) {
+				minAge = c.age;
+			}
+			if (c.age > maxAge) {
+				maxAge = c.age;
+			}
+		}
+		avgAge /= twos.size();
+		System.out.print("" + twos.size() + " total Critter2s    ");
+		System.out.print("Average age: " + avgAge + "    ");
+		System.out.print("Max age: " + maxAge + "    ");
+		System.out.println("Min age: " + minAge + "    ");
+	}
 
 }

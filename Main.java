@@ -69,8 +69,7 @@ public class Main {
 
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
-        boolean keepGoing = true;
-        while(keepGoing) {
+        while(true) {
         	System.out.print("critters> ");
         	String input = kb.nextLine();
         	String[] in= input.split(" ");
@@ -132,6 +131,9 @@ public class Main {
         				try{
         					if(in.length > 2){
         						int numOfMake = Integer.parseInt(in[2]);
+        						if (numOfMake < 0) {
+        							System.out.println("error processing: " + input);
+        						}
         						for(int i=0; i < numOfMake-1; i+=1){
         							Critter.makeCritter(in[1]);
         						}	
@@ -173,7 +175,7 @@ public class Main {
         	}
         }
         /* Write your code above */
-        System.out.flush();
+
 
     }
 }
