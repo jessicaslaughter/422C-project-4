@@ -73,45 +73,71 @@ public class Main {
 		String input = kb.nextLine();
 		String[] in= input.split(" ");
 		
-		while(in[0] != "quit"){
-			if (in[0] == "show"){
+		while(in[0] != null){
+			if (in[0] == "quit"){
+				if (in.length > 1) {
+					System.out.println("error processing: " + input);
+				}
+				else {
+					System.exit(0);
+				}
+			}
+			else if (in[0] == "show"){
+				if (in.length > 1) {
+					System.out.println("error processing: " + input);
+				}
 				Critter.displayWorld();
 			}
 			else if (in[0] == "step"){
-				try{
-					if(in.length > 1){
-						int numOfSteps = Integer.parseInt(in[1]);
-						for(int i=0; i < numOfSteps-1; i+=1){
-							Critter.worldTimeStep();
-						}	
-					}
-					Critter.worldTimeStep();;
-				}
-				catch(NullPointerException|NumberFormatException exception){
+				if (in.length > 2) {
 					System.out.println("error processing: " + input);
+				}
+				else {
+					try{
+						if(in.length > 1){
+							int numOfSteps = Integer.parseInt(in[1]);
+							for(int i=0; i < numOfSteps-1; i+=1){
+								Critter.worldTimeStep();
+							}	
+						}
+						Critter.worldTimeStep();
+					}
+					catch(NullPointerException|NumberFormatException exception){
+						System.out.println("error processing: " + input);
+					}
 				}
 			}
 			else if (in[0] == "seed"){
-				try{
-					long seedNum = Long.parseLong(in[1]);
-					Critter.setSeed(seedNum);
-				}
-				catch(NullPointerException|NumberFormatException exception){
+				if (in.length > 2) {
 					System.out.println("error processing: " + input);
+				}
+				else {
+					try{
+						long seedNum = Long.parseLong(in[1]);
+						Critter.setSeed(seedNum);
+					}
+					catch(NullPointerException|NumberFormatException exception){
+						System.out.println("error processing: " + input);
+					}
 				}
 			}
 			else if (in[0] == "make"){
-				try{
-					if(in.length > 2){
-						int numOfMake = Integer.parseInt(in[2]);
-						for(int i=0; i < numOfMake-1; i+=1){
-							Critter.makeCritter(in[1]);
-						}	
-					}
-					Critter.makeCritter(in[1]);
-				}
-				catch(InvalidCritterException|NullPointerException|NumberFormatException exception){
+				if (in.length > 3) {
 					System.out.println("error processing: " + input);
+				}
+				else {
+					try{
+						if(in.length > 2){
+							int numOfMake = Integer.parseInt(in[2]);
+							for(int i=0; i < numOfMake-1; i+=1){
+								Critter.makeCritter(in[1]);
+							}	
+						}
+						Critter.makeCritter(in[1]);
+					}
+					catch(InvalidCritterException|NullPointerException|NumberFormatException exception){
+						System.out.println("error processing: " + input);
+					}
 				}
 			}
 
