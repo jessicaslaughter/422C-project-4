@@ -298,20 +298,35 @@ public abstract class Critter {
 				if((Ax == Bx) && (Ay == By)){
 					Boolean Afight = population.get(crit).fight(population.get(compare).toString());
 					Boolean Bfight = population.get(compare).fight(population.get(crit).toString());
-					if(!((Ax ==population.get(crit).x_coord)&&(Ay ==population.get(crit).y_coord)
-							&&(Bx ==population.get(compare).x_coord)&&(By ==population.get(compare).y_coord))){		//someone's position changed
-						if(!(Ax == population.get(crit).x_coord)&&(Ay == population.get(crit).y_coord)){		//A changed
-							moved.add(crit);
-							break;		//go to the next critter and add to the moved critters to check later
+					if(population.get(crit).energy > 0 && population.get(compare).energy > 0){
+						if(!((Ax ==population.get(crit).x_coord)&&(Ay ==population.get(crit).y_coord)
+								&&(Bx ==population.get(compare).x_coord)&&(By ==population.get(compare).y_coord))){		//someone's position changed
+							if(!(Ax == population.get(crit).x_coord)&&(Ay == population.get(crit).y_coord)){		//A changed
+								moved.add(crit);
+								break;		//go to the next critter and add to the moved critters to check later
+							}
+							if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
+								moved.add(compare);
+							}
 						}
+						else{		//still in the same position so they need to fight
+							Critter dead = encounter(population.get(crit), Afight, population.get(compare), Bfight);
+							if(dead == population.get(crit)){population.remove(crit);}
+							else{population.remove(compare);}
+						}
+					}
+					else if(population.get(crit).energy <= 0){
 						if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
 							moved.add(compare);
 						}
+						population.remove(crit);
+						break;
 					}
-					else{		//still in the same position so they need to fight
-						Critter dead = encounter(population.get(crit), Afight, population.get(compare), Bfight);
-						if(dead == population.get(crit)){population.remove(crit);}
-						else{population.remove(compare);}
+					else if(population.get(compare).energy <= 0){
+						if(!(Ax == population.get(crit).x_coord)&&(By == population.get(crit).y_coord)){		//B changed
+							moved.add(crit);
+						}
+						population.remove(compare);
 					}
 				}
 			}
@@ -327,20 +342,35 @@ public abstract class Critter {
 					if((Ax == Bx) && (Ay == By)){		//if A and B are in the same space, then invoke fight()
 						Boolean Afight = population.get(moved.get(movedIncr)).fight(population.get(compare).toString());
 						Boolean Bfight = population.get(compare).fight(population.get(moved.get(movedIncr)).toString());
-						if(!((Ax ==population.get(moved.get(movedIncr)).x_coord)&&(Ay ==population.get(moved.get(movedIncr)).y_coord)
-								&&(Bx ==population.get(compare).x_coord)&&(By ==population.get(compare).y_coord))){		//someone's position changed
-							if(!(Ax == population.get(moved.get(movedIncr)).x_coord)&&(Ay == population.get(moved.get(movedIncr)).y_coord)){		//A changed
-								moved.add(moved.get(movedIncr));
-								break;		//go to the next critter and add to the moved critters to check later
+						if(population.get(moved.get(movedIncr)).energy > 0 && population.get(compare).energy > 0){
+							if(!((Ax ==population.get(moved.get(movedIncr)).x_coord)&&(Ay ==population.get(moved.get(movedIncr)).y_coord)
+									&&(Bx ==population.get(compare).x_coord)&&(By ==population.get(compare).y_coord))){		//someone's position changed
+								if(!(Ax == population.get(moved.get(movedIncr)).x_coord)&&(Ay == population.get(moved.get(movedIncr)).y_coord)){		//A changed
+									moved.add(moved.get(movedIncr));
+									break;		//go to the next critter and add to the moved critters to check later
+								}
+								if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
+									moved.add(compare);
+								}
 							}
+							else{		//still in the same position so they need to fight
+								Critter dead = encounter(population.get(moved.get(movedIncr)), Afight, population.get(compare), Bfight);
+								if(dead == population.get(moved.get(movedIncr))){population.remove(moved.get(movedIncr));}
+								else{population.remove(compare);}
+							}
+						}
+						else if(population.get(moved.get(movedIncr)).energy <= 0){
 							if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
 								moved.add(compare);
 							}
+							population.remove(moved.get(movedIncr));
+							break;
 						}
-						else{		//still in the same position so they need to fight
-							Critter dead = encounter(population.get(moved.get(movedIncr)), Afight, population.get(compare), Bfight);
-							if(dead == population.get(moved.get(movedIncr))){population.remove(moved.get(movedIncr));}
-							else{population.remove(compare);}
+						else if(population.get(compare).energy <= 0){
+							if(!(Ax == population.get(moved.get(movedIncr)).x_coord)&&(By == population.get(moved.get(movedIncr)).y_coord)){		//B changed
+								moved.add(moved.get(movedIncr));
+							}
+							population.remove(compare);
 						}
 					}
 				}
