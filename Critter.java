@@ -157,14 +157,14 @@ public abstract class Critter {
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
 		try{
 			//need to check input first
-			Critter c = (Critter) Class.forName(myPackage + "." + critter_class_name).newInstance();
+			TestCritter c = (TestCritter) Class.forName(myPackage + "." + critter_class_name).newInstance();
 			//add to the collection
 			Critter.population.add(c);
 			//energy
-			c.energy=Params.start_energy;
+			c.setEnergy(Params.start_energy);
 			//random position
-			c.x_coord = Critter.getRandomInt(Params.world_width);
-			c.y_coord = Critter.getRandomInt(Params.world_height);
+			c.setX_coord(getRandomInt(Params.world_width));
+			c.setY_coord(getRandomInt(Params.world_height));
 		}
 		catch(ClassNotFoundException|InstantiationException|IllegalAccessException exception){
 			throw new InvalidCritterException(critter_class_name);
@@ -381,6 +381,15 @@ public abstract class Critter {
 		babies.clear();
 		for (Critter crit : population) {
 			crit.hasMoved = false; // reset movement tracker
+		}
+		
+		for(int i=0; i < Params.refresh_algae_count; i +=1){
+			try{
+				makeCritter("Algae");
+			}
+			catch(InvalidCritterException exception){
+				System.out.println("error processing: algae");
+			}
 		}
 	}
 	
