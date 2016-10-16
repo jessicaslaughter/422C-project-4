@@ -287,7 +287,65 @@ public abstract class Critter {
 				population.remove(crit);		//delete dead critters
 			}
 		}
-		
+		moved.clear();
+		for(int crit = 0; crit < population.size()-1; crit+=1){
+			int Ax=population.get(crit).x_coord;
+			int Ay=population.get(crit).y_coord;
+			for(int compare = crit+1; compare < population.size(); compare+=1){
+				int Bx=population.get(compare).x_coord;
+				int By=population.get(compare).y_coord;
+				if((Ax == Bx) && (Ay == By)){
+					Boolean Afight = population.get(crit).fight(population.get(compare).toString());
+					Boolean Bfight = population.get(compare).fight(population.get(crit).toString());
+					if(!((Ax ==population.get(crit).x_coord)&&(Ay ==population.get(crit).y_coord)
+							&&(Bx ==population.get(compare).x_coord)&&(By ==population.get(compare).y_coord))){		//someone's position changed
+						if(!(Ax == population.get(crit).x_coord)&&(Ay == population.get(crit).y_coord)){		//A changed
+							moved.add(crit);
+							break;		//go to the next critter and add to the moved critters to check later
+						}
+						if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
+							moved.add(compare);
+						}
+					}
+					else{		//still in the same position so they need to fight
+						Critter dead = encounter(population.get(crit), Afight, population.get(compare), Bfight);
+						if(dead == population.get(crit)){population.remove(crit);}
+						else{population.remove(compare);}
+					}
+				}
+			}
+		}
+		int movedIncr = 0;
+		while(moved.size() > movedIncr){
+			int Ax=population.get(moved.get(movedIncr)).x_coord;
+			int Ay=population.get(moved.get(movedIncr)).y_coord;
+			for(int compare = 0; compare < population.size(); compare+=1){
+				if(compare!=moved.get(movedIncr)){		//compare with all the other critters
+					int Bx=population.get(compare).x_coord;
+					int By=population.get(compare).y_coord;
+					if((Ax == Bx) && (Ay == By)){		//if A and B are in the same space, then invoke fight()
+						Boolean Afight = population.get(moved.get(movedIncr)).fight(population.get(compare).toString());
+						Boolean Bfight = population.get(compare).fight(population.get(moved.get(movedIncr)).toString());
+						if(!((Ax ==population.get(moved.get(movedIncr)).x_coord)&&(Ay ==population.get(moved.get(movedIncr)).y_coord)
+								&&(Bx ==population.get(compare).x_coord)&&(By ==population.get(compare).y_coord))){		//someone's position changed
+							if(!(Ax == population.get(moved.get(movedIncr)).x_coord)&&(Ay == population.get(moved.get(movedIncr)).y_coord)){		//A changed
+								moved.add(moved.get(movedIncr));
+								break;		//go to the next critter and add to the moved critters to check later
+							}
+							if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
+								moved.add(compare);
+							}
+						}
+						else{		//still in the same position so they need to fight
+							Critter dead = encounter(population.get(moved.get(movedIncr)), Afight, population.get(compare), Bfight);
+							if(dead == population.get(moved.get(movedIncr))){population.remove(moved.get(movedIncr));}
+							else{population.remove(compare);}
+						}
+					}
+				}
+			}
+			movedIncr+=1;
+		}
 		population.addAll(babies);
 		babies.clear();
 		for (Critter crit : population) {
@@ -330,4 +388,32 @@ public abstract class Critter {
 		}
 		System.out.println("+");
 	}
+	
+	/**
+	 * This method happens when A and B are still in the same place after fight()
+	 */
+	public static Critter encounter(Critter A, Boolean Afight, Critter B, Boolean Bfight){		//A is either from query or slower index and return the dead
+		int[] result = new int[2];
+		if(!Afight){		//A doesn't want to fight
+			result[0] = 0;
+		}
+		else{		//A wants to fight, get random number
+			result[0] = rand.nextInt(A.energy);
+		}
+		if(!Bfight){		//B doesn't want to fight
+			result[1] = 0;
+		}
+		else{		//B wants to fight, get random number
+			result[1] = rand.nextInt(B.energy);
+		}
+		if(result[0] > result[1]){		//A wins
+			A.energy += (B.energy/2);
+			return B;
+		}
+		else{		//B wins
+			B.energy += (A.energy/2);
+			return A;
+		}
+	}
+	
 }
