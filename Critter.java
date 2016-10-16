@@ -180,7 +180,7 @@ public abstract class Critter {
 		List<Critter> result = new java.util.ArrayList<Critter>();
 		Class<?> critClass = null;
 		try {
-			critClass = Class.forName(critter_class_name);
+			critClass = Class.forName(myPackage + "." + critter_class_name);
 		}
 		catch (ClassNotFoundException e) {
 			throw new InvalidCritterException(critter_class_name);
@@ -315,8 +315,8 @@ public abstract class Critter {
 					if (crit.x_coord == x && crit.y_coord == y) { // position occupied
 						System.out.print(crit.toString());
 						space = "";
+						break;
 					}
-					break;
 				}
 				System.out.print(space);
 			}

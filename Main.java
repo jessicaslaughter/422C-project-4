@@ -69,110 +69,109 @@ public class Main {
 
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
-        System.out.print("critters> ");
-		String input = kb.nextLine();
-		String[] in= input.split(" ");
-		
-		while(in[0] != null){
-			if (in[0] == "quit"){
-				if (in.length > 1) {
-					System.out.println("error processing: " + input);
-				}
-				else {
-					System.exit(0);
-				}
-			}
-			else if (in[0] == "show"){
-				if (in.length > 1) {
-					System.out.println("error processing: " + input);
-				}
-				Critter.displayWorld();
-			}
-			else if (in[0] == "step"){
-				if (in.length > 2) {
-					System.out.println("error processing: " + input);
-				}
-				else {
-					try{
-						if(in.length > 1){
-							int numOfSteps = Integer.parseInt(in[1]);
-							for(int i=0; i < numOfSteps-1; i+=1){
-								Critter.worldTimeStep();
-							}	
-						}
-						Critter.worldTimeStep();
-					}
-					catch(NullPointerException|NumberFormatException exception){
-						System.out.println("error processing: " + input);
-					}
-				}
-			}
-			else if (in[0] == "seed"){
-				if (in.length > 2) {
-					System.out.println("error processing: " + input);
-				}
-				else {
-					try{
-						long seedNum = Long.parseLong(in[1]);
-						Critter.setSeed(seedNum);
-					}
-					catch(NullPointerException|NumberFormatException exception){
-						System.out.println("error processing: " + input);
-					}
-				}
-			}
-			else if (in[0] == "make"){
-				if (in.length > 3) {
-					System.out.println("error processing: " + input);
-				}
-				else {
-					try{
-						if(in.length > 2){
-							int numOfMake = Integer.parseInt(in[2]);
-							for(int i=0; i < numOfMake-1; i+=1){
-								Critter.makeCritter(in[1]);
-							}	
-						}
-						Critter.makeCritter(in[1]);
-					}
-					catch(InvalidCritterException|NullPointerException|NumberFormatException exception){
-						System.out.println("error processing: " + input);
-					}
-				}
-			}
+        boolean keepGoing = true;
+        while(keepGoing) {
+        	System.out.print("critters> ");
+        	String input = kb.nextLine();
+        	String[] in= input.split(" ");
 
-			else if (in[0] == "stats"){
-				if (in.length != 2) {
-					System.out.println("error processing: " + input);
-				}
-				else {
-					String inputClass = in[1];
-					List<Critter> crits = null;
-					try {
-						crits = Critter.getInstances(inputClass);
-					}
-					catch (InvalidCritterException e) {
-						System.out.println("error processing: " + input);
-					}
-					Class<?> critClass = null;
-					Class<?>[] types = {List.class};
-					try {
-						critClass = Class.forName(myPackage + "." + inputClass);
-						java.lang.reflect.Method runStats = critClass.getMethod("runStats", types);
-						runStats.invoke(critClass, crits);
-					}
-					catch (Exception e) {
-						System.out.println("error processing: " + input);
-					}
-				}
-			}
-			else {
-				System.out.println("invalid command: " + input);
-			}
-			System.out.print("critters> ");
-			input = kb.nextLine();
-			in= input.split(" ");
-		}
+        	switch(in[0]){
+        		case "quit":
+        			if (in.length > 1) {
+        				System.out.println("error processing: " + input);
+        			}
+        			else {
+        				System.exit(0);
+        			}
+        		case "show":
+        			if (in.length > 1) {
+        				System.out.println("error processing: " + input);
+        			}
+        			else {
+        				Critter.displayWorld();
+        			}
+        			continue;
+        		case "step":
+        			if (in.length > 2) {
+        				System.out.println("error processing: " + input);
+        			}
+        			else {
+        				try{
+        					if(in.length > 1){
+        						int numOfSteps = Integer.parseInt(in[1]);
+        						for(int i=0; i < numOfSteps-1; i+=1){
+        							Critter.worldTimeStep();
+        						}	
+        					}
+        					Critter.worldTimeStep();
+        				}
+        				catch(NullPointerException|NumberFormatException exception){
+        					System.out.println("error processing: " + input);
+        				}
+        			}
+        			continue;
+        		case "seed":
+        			if (in.length > 2) {
+        				System.out.println("error processing: " + input);
+        			}
+        			else {
+        				try{
+        					long seedNum = Long.parseLong(in[1]);
+        					Critter.setSeed(seedNum);
+        				}
+        				catch(NullPointerException|NumberFormatException exception){
+        					System.out.println("error processing: " + input);
+        				}
+        			}
+        			continue;
+        		case "make":
+        			if (in.length > 3) {
+        				System.out.println("error processing: " + input);
+        			}
+        			else {
+        				try{
+        					if(in.length > 2){
+        						int numOfMake = Integer.parseInt(in[2]);
+        						for(int i=0; i < numOfMake-1; i+=1){
+        							Critter.makeCritter(in[1]);
+        						}	
+        					}
+        					Critter.makeCritter(in[1]);
+        				}
+        				catch(InvalidCritterException|NullPointerException|NumberFormatException exception){
+        					System.out.println("error processing: " + input);
+        				}
+        			}
+        			continue;
+        		case "stats":
+        			if (in.length != 2) {
+        				System.out.println("error processing: " + input);
+        			}
+        			else {
+        				String inputClass = in[1];
+        				List<Critter> crits = null;
+        				try {
+        					crits = Critter.getInstances(inputClass);
+        				}
+        				catch (InvalidCritterException e) {
+        					System.out.println("error processing: " + input);
+        				}
+        				Class<?> critClass = null;
+        				Class<?>[] types = {List.class};
+        				try {
+        					critClass = Class.forName(myPackage + "." + inputClass);
+        					java.lang.reflect.Method runStats = critClass.getMethod("runStats", types);
+        					runStats.invoke(critClass, crits);
+        				}
+        				catch (Exception e) {
+        					System.out.println("error processing: " + input);
+        				}
+        			}
+        			continue;
+        		default:
+        			System.out.println("invalid command: " + input);
+        	}
+        }
         /* Write your code above */
         System.out.flush();
 
