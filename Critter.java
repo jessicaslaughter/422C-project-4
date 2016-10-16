@@ -47,14 +47,14 @@ public abstract class Critter {
 	
 	private int x_coord;
 	private int y_coord;
-	
+
 	/**
 	 * This private method moves a critter in a specified direction
 	 * for a specified number of steps.
 	 * @param direction is the direction to be moved in (0-7)
 	 * @param numSteps is the number of steps to take in the direction
 	 */
-	private void moveCritter(int direction, int numSteps) {
+	private final void moveCritter(int direction, int numSteps) {
 		switch (direction) {
 			case 0: this.x_coord = this.x_coord + numSteps;
 					break;
@@ -95,6 +95,10 @@ public abstract class Critter {
 	
 	private boolean hasMoved; // true if Critter has moved in this time step
 	
+	/**
+	 * This method moves a Critter by one position in a specified direction.
+	 * @param direction is the direction to move the Critter in
+	 */
 	protected final void walk(int direction) {
 		this.energy = this.energy - Params.walk_energy_cost;
 		if (hasMoved) {
@@ -104,6 +108,10 @@ public abstract class Critter {
 		hasMoved = true;
 	}
 	
+	/**
+	 * This method moves a Critter by two positions in a specified direction.
+	 * @param direction is the direction to move the Critter in
+	 */
 	protected final void run(int direction) {
 		this.energy = this.energy - Params.run_energy_cost;
 		if (hasMoved) {
@@ -170,17 +178,17 @@ public abstract class Critter {
 	 */
 	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
 		List<Critter> result = new java.util.ArrayList<Critter>();
-		try { 
-			Class<?> c = Class.forName(myPackage + "." + critter_class_name);
-			
-			for (Critter crit : population) {
-				if (crit instanceof c) { // need to fix this
-					result.add(crit);
-				}
-			}
+		Class<?> critClass = null;
+		try {
+			critClass = Class.forName(critter_class_name);
 		}
-		catch(InvalidCritterException exception) {
+		catch (ClassNotFoundException e) {
 			throw new InvalidCritterException(critter_class_name);
+		}
+		for (Critter crit : population) {
+			if (critClass.isInstance(crit)) {
+				result.add(crit);
+			}
 		}
 		return result;
 	}
@@ -287,6 +295,9 @@ public abstract class Critter {
 		}
 	}
 	
+	/**
+	 * This method prints out a 2-D grid of the simulated world.
+	 */
 	public static void displayWorld() {
 		// top border
 		System.out.print("+");

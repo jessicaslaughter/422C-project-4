@@ -14,6 +14,7 @@ package assignment4; // cannot be in default package
 import java.util.Scanner;
 import java.io.*;
 import java.lang.*;
+import java.util.*;
 
 /*
  * Usage: java <pkgname>.Main <input file> test
@@ -113,10 +114,35 @@ public class Main {
 					System.out.println("error processing: " + input);
 				}
 			}
-/*			TODO: Stage3
- * 			else if (in[0] == "stats"){
 
-			}*/
+			else if (in[0] == "stats"){
+				if (in.length != 2) {
+					System.out.println("error processing: " + input);
+				}
+				else {
+					String inputClass = in[1];
+					List<Critter> crits = null;
+					try {
+						crits = Critter.getInstances(inputClass);
+					}
+					catch (InvalidCritterException e) {
+						System.out.println("error processing: " + input);
+					}
+					Class<?> critClass = null;
+					Class<?>[] types = {List.class};
+					try {
+						critClass = Class.forName(myPackage + "." + inputClass);
+						java.lang.reflect.Method runStats = critClass.getMethod("runStats", types);
+						runStats.invoke(critClass, crits);
+					}
+					catch (Exception e) {
+						System.out.println("error processing: " + input);
+					}
+				}
+			}
+			else {
+				System.out.println("invalid command: " + input);
+			}
 			System.out.print("critters> ");
 			input = kb.nextLine();
 			in= input.split(" ");
