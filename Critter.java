@@ -11,6 +11,7 @@
  */
 package assignment4;
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 
 /* see the PDF for descriptions of the methods and fields in this class
@@ -155,16 +156,18 @@ public abstract class Critter {
 	 * @throws InvalidCritterException
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
+		
+		
 		try{
 			//need to check input first
-			TestCritter c = (TestCritter) Class.forName(myPackage + "." + critter_class_name).newInstance();
+			Critter c = (Critter) Class.forName(myPackage + "." + critter_class_name).newInstance();
 			//add to the collection
 			Critter.population.add(c);
 			//energy
-			c.setEnergy(Params.start_energy);
+			c.energy=Params.start_energy;
 			//random position
-			c.setX_coord(getRandomInt(Params.world_width));
-			c.setY_coord(getRandomInt(Params.world_height));
+			c.x_coord = Critter.getRandomInt(Params.world_width);
+			c.y_coord = Critter.getRandomInt(Params.world_height);
 		}
 		catch(ClassNotFoundException|InstantiationException|IllegalAccessException exception){
 			throw new InvalidCritterException(critter_class_name);

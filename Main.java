@@ -69,6 +69,7 @@ public class Main {
 
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
+       
         while(true) {
         	System.out.print("critters> ");
         	String input = kb.nextLine();
