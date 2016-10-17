@@ -282,16 +282,14 @@ public abstract class Critter {
 	}
 	
 	public static void worldTimeStep() {
+		// do time step
 		for(int crit = 0; crit < population.size(); crit+=1){
-			population.get(crit).doTimeStep();	//do time step for all critters
+			population.get(crit).doTimeStep();
 		}
-		for(int crit = 0; crit < population.size(); crit+=1){
-			population.get(crit).energy -= Params.rest_energy_cost;
-			if(population.get(crit).energy <= 0){
-				population.remove(crit);		//delete dead critters
-			}
-		}
+		
 		moved.clear();
+		
+		// encounters
 		for(int crit = 0; crit < population.size()-1; crit+=1){
 			int Ax=population.get(crit).x_coord;
 			int Ay=population.get(crit).y_coord;
@@ -380,12 +378,8 @@ public abstract class Critter {
 			}
 			movedIncr+=1;
 		}
-		population.addAll(babies);
-		babies.clear();
-		for (Critter crit : population) {
-			crit.hasMoved = false; // reset movement tracker
-		}
 		
+		// generate algae
 		for(int i=0; i < Params.refresh_algae_count; i +=1){
 			try{
 				makeCritter("Algae");
@@ -393,6 +387,22 @@ public abstract class Critter {
 			catch(InvalidCritterException exception){
 				System.out.println("error processing: algae");
 			}
+		}
+		
+		// add babies to population
+		population.addAll(babies);
+		babies.clear();
+		
+		// remove dead critters
+		for(int crit = 0; crit < population.size(); crit+=1){
+			population.get(crit).energy -= Params.rest_energy_cost; // apply rest energy cost
+			if(population.get(crit).energy <= 0){
+				population.remove(crit);
+			}
+		}
+		
+		for (Critter crit : population) {
+			crit.hasMoved = false; // reset movement tracker
 		}
 	}
 	
