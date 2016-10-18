@@ -9,7 +9,6 @@
  * Slip days used: <0>
  * Fall 2016
  */
-
 package assignment4;
 
 /**
@@ -31,11 +30,19 @@ public class Critter3 extends Critter {
 		reproducedNum = 0;		//set a direction and set reproduced to zero
 	}
 
+	/**
+	 * This method defines Critter3s actions during a time step.
+	 * It just determines the direction for potential movement
+	 */
 	@Override
 	public void doTimeStep() {
 		dir = getRandomInt(8);		//determine a direction
 	}
 
+	/**
+	 * This method defines Critter3s fight method. It always eats algae
+	 * and if it encounters another Critter3, it will reproduce
+	 */
 	public boolean fight(String opponent) {
 		if(opponent == "@"){		//always eat algae
 			return true;
@@ -49,6 +56,10 @@ public class Critter3 extends Critter {
 		return false;
 	}
 	
+	/**
+	 * This method defines the statistics for Critter3, including max, 
+	 * average, total, min reproductions
+	 */
 	public static void runStats(java.util.List<Critter> three) {
 		int maxReproduce = 0;
 		int avgReproduce = 0;
