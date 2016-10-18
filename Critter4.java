@@ -31,7 +31,10 @@ public class Critter4 extends Critter {
 		datesFour = 0;
 		datesElse = 0;
 	}
-
+	/**
+	 * This method defines what Critter4 does on time step. It picks a random direction
+	 * and if critter has extra energy, it will walk.
+	 */
 	@Override
 	public void doTimeStep() {
 		dir = getRandomInt(8);		//choose a random direction, if they have lots of energy, they can walk
@@ -39,7 +42,10 @@ public class Critter4 extends Critter {
 			walk(dir);
 		}
 	}
-
+	/**
+	 * This method defines the fight method for Critter4. Since this Critter doesn't like to 
+	 * fight with friends, it always walks away unless it's food
+	 */
 	public boolean fight(String opponent) {		//walk away from all critters
 		if(opponent == "4"){
 			datesFour+=1;
@@ -55,7 +61,10 @@ public class Critter4 extends Critter {
 			return true;		//fight algae
 		}
 	}
-	
+	/**
+	 * This method defines the statistics for Critter3, including total dates, 
+	 * dates with Critter4, dates with other critters, and average dates
+	 */
 	public static void runStats(java.util.List<Critter> four) {
 		int avgDateFour = 0;
 		int totalDateFour = 0;
