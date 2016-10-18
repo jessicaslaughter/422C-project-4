@@ -23,36 +23,36 @@ public class Critter4 extends Critter {
 	@Override
 	public String toString() { return "4"; }
 	private int dir;
-	private int datesFour;
-	private int datesElse;
+	private int datesFour;		//counter for the number of encounters with itself
+	private int datesElse;		//counter for the number of encounters with other critters
 	
 	public Critter4() {
-		dir = Critter.getRandomInt(8);
+		dir = Critter.getRandomInt(8);		//set direction and initialize counters
 		datesFour = 0;
 		datesElse = 0;
 	}
 
 	@Override
 	public void doTimeStep() {
-		dir = getRandomInt(8);
+		dir = getRandomInt(8);		//choose a random direction, if they have lots of energy, they can walk
 		if(this.getEnergy() > 50){
 			walk(dir);
 		}
 	}
 
-	public boolean fight(String opponent) {
+	public boolean fight(String opponent) {		//walk away from all critters
 		if(opponent == "4"){
 			datesFour+=1;
-			walk(dir);
+			walk(dir);		
 			return false;
 		}
-		else if(opponent != "@"){
+		else if(opponent != "@"){		//for all critters other than algae
 			datesElse+=1;
-			walk(dir);
+			walk(dir);			
 			return false;
 		}
 		else{
-			return true;
+			return true;		//fight algae
 		}
 	}
 	
@@ -66,10 +66,10 @@ public class Critter4 extends Critter {
 			Critter4 c = (Critter4) obj;
 			totalDateElse += c.datesElse;
 			totalDateFour += c.datesFour;
-			totalDates += (c.datesElse + c.datesFour);
+			totalDates += (c.datesElse + c.datesFour);		//find total number of dates
 		}
 		if(four.size() != 0){
-			avgDateFour = totalDateFour / four.size();
+			avgDateFour = totalDateFour / four.size();		//averages
 			avgDateElse = totalDateElse / four.size();
 		}
 		System.out.print("" + four.size() + " total Critter4s    ");
