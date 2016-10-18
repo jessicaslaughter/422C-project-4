@@ -1,14 +1,3 @@
-/* CRITTERS Critter3.java
- * EE422C Project 4 submission by
- * Gina Lu
- * gbl286
- * 16480
- * Jessica Slaughter
- * jts3329
- * 16470
- * Slip days used: <0>
- * Fall 2016
- */
 package assignment4;
 
 /**
@@ -23,23 +12,23 @@ public class Critter3 extends Critter {
 	@Override
 	public String toString() { return "3"; }
 	private int dir;
-	private int reproducedNum;
+	private int reproducedNum;		//keeps count of the number of reproductions
 	
 	public Critter3() {
 		dir = Critter.getRandomInt(8);
-		reproducedNum = 0;
+		reproducedNum = 0;		//set a direction and set reproduced to zero
 	}
 
 	@Override
 	public void doTimeStep() {
-		dir = getRandomInt(8);
+		dir = getRandomInt(8);		//determine a direction
 	}
 
 	public boolean fight(String opponent) {
-		if(opponent == "@"){
+		if(opponent == "@"){		//always eat algae
 			return true;
 		}
-		if(opponent == "3"){
+		if(opponent == "3"){		//if it is also a Critter 3, then reproduce with it
 			Critter3 baby = new Critter3();
 			reproduce(baby, Critter.getRandomInt(8));
 			reproducedNum+=1;
@@ -56,14 +45,14 @@ public class Critter3 extends Critter {
 		for (Object obj : three) {
 			Critter3 c = (Critter3) obj;
 			if (c.reproducedNum > maxReproduce) {
-				maxReproduce = c.reproducedNum;
+				maxReproduce = c.reproducedNum;		//find max
 			}
 			if(c.reproducedNum < minReproduce){
-				minReproduce = c.reproducedNum;
+				minReproduce = c.reproducedNum;		//find min
 			}
-			totalReproduce += c.reproducedNum;
+			totalReproduce += c.reproducedNum;		//find total to find average
 		}
-		if(three.size() != 0){
+		if(three.size() != 0){		//compensate for no critter case
 			avgReproduce = totalReproduce / three.size();
 		}
 		
