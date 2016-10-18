@@ -1,8 +1,8 @@
 /* CRITTERS Critter.java
  * EE422C Project 4 submission by
  * Gina Lu
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
+ * gbl286
+ * 16480
  * Jessica Slaughter
  * jts3329
  * 16470
