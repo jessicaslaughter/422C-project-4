@@ -1,8 +1,8 @@
-/* CRITTERS Critter1.java
+/* CRITTERS Main.java
  * EE422C Project 4 submission by
  * Gina Lu
- * gbl286
- * 16480
+ * <Student1 EID>
+ * <Student1 5-digit Unique No.>
  * Jessica Slaughter
  * jts3329
  * 16470
@@ -31,6 +31,12 @@ public class Critter1 extends Critter {
 		dir = Critter.getRandomInt(8);
 	}
 
+	/**
+	 * This method defines Critter1s actions during a time step.
+	 * If its energy is less than 10, it runs. Otherwise, it walks.
+	 * It changes direction each time step by one unit
+	 * counterclockwise.
+	 */
 	@Override
 	public void doTimeStep() {
 		if (getEnergy() < 10) {
@@ -49,6 +55,11 @@ public class Critter1 extends Critter {
 		}
 	}
 
+	/**
+	 * This method defines Critter1s actions during a fight.
+	 * If its opponent is algae, it will fight. Otherwise, it will walk 
+	 * away and not fight.
+	 */
 	@Override
 	public boolean fight(String opponent) {
 		if (opponent.equals("@")) {
@@ -59,6 +70,12 @@ public class Critter1 extends Critter {
 		return false; // never fights, only cares about food
 	}
 	
+	/**
+	 * This method determines and prints the stats for
+	 * all of the Critter1s currently in the population
+	 * of all Critters.
+	 * @param ones is the list of Critter1s in the population
+	 */
 	public static void runStats(java.util.List<Critter> ones) {
 		int totalAlgaeEaten = 0;
 		int hungryCrits = 0;

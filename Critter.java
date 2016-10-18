@@ -1,8 +1,8 @@
 /* CRITTERS Critter.java
  * EE422C Project 4 submission by
  * Gina Lu
- * gbl286
- * 16480
+ * <Student1 EID>
+ * <Student1 5-digit Unique No.>
  * Jessica Slaughter
  * jts3329
  * 16470
@@ -291,49 +291,43 @@ public abstract class Critter {
 		
 		// encounters
 		for(int crit = 0; crit < population.size()-1; crit+=1){
-			if(population.get(crit).energy > 0){		//only check alive critters
-				int Ax=population.get(crit).x_coord;
-				int Ay=population.get(crit).y_coord;
-				for(int compare = crit+1; compare < population.size(); compare+=1){
-					if(population.get(compare).energy > 0){		//only compare with alive critters
-						int Bx=population.get(compare).x_coord;
-						int By=population.get(compare).y_coord;
-						if((Ax == Bx) && (Ay == By)){		//same position, encounter
-							Boolean Afight = population.get(crit).fight(population.get(compare).toString());
-							Boolean Bfight = population.get(compare).fight(population.get(crit).toString());
-							if(population.get(crit).energy > 0 && population.get(compare).energy > 0){		//if they still have energy after fighting
-								if(!((Ax ==population.get(crit).x_coord)&&(Ay ==population.get(crit).y_coord)
-										&&(Bx ==population.get(compare).x_coord)&&(By ==population.get(compare).y_coord))){		//someone's position changed
-									if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
-										moved.add(compare);
-									}
-									if(!(Ax == population.get(crit).x_coord)&&(Ay == population.get(crit).y_coord)){		//A changed
-										moved.add(crit);
-										break;		//go to the next critter and add to the moved critters to check later
-									}
-								}
-								else{		//still in the same position so they need to fight
-									Critter dead = encounter(population.get(crit), Afight, population.get(compare), Bfight);
-									if(dead == population.get(crit)){population.remove(crit);}
-									else{population.remove(compare);}
-								}
+			int Ax=population.get(crit).x_coord;
+			int Ay=population.get(crit).y_coord;
+			for(int compare = crit+1; compare < population.size(); compare+=1){
+				int Bx=population.get(compare).x_coord;
+				int By=population.get(compare).y_coord;
+				if((Ax == Bx) && (Ay == By)){
+					Boolean Afight = population.get(crit).fight(population.get(compare).toString());
+					Boolean Bfight = population.get(compare).fight(population.get(crit).toString());
+					if(population.get(crit).energy > 0 && population.get(compare).energy > 0){
+						if(!((Ax ==population.get(crit).x_coord)&&(Ay ==population.get(crit).y_coord)
+								&&(Bx ==population.get(compare).x_coord)&&(By ==population.get(compare).y_coord))){		//someone's position changed
+							if(!(Ax == population.get(crit).x_coord)&&(Ay == population.get(crit).y_coord)){		//A changed
+								moved.add(crit);
+								break;		//go to the next critter and add to the moved critters to check later
 							}
-							else{
-								if(population.get(compare).energy <= 0){		
-									if(!(Ax == population.get(crit).x_coord)&&(By == population.get(crit).y_coord)){		//B changed
-										moved.add(crit);
-									}
-									population.remove(compare);
-								}
-								if(population.get(crit).energy <= 0){		//if fight caused someone to die
-									if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
-										moved.add(compare);		//check if the other guy moved
-									}
-									population.remove(crit);		//remove the dead critter
-									break;
-								}
+							if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
+								moved.add(compare);
 							}
 						}
+						else{		//still in the same position so they need to fight
+							Critter dead = encounter(population.get(crit), Afight, population.get(compare), Bfight);
+							if(dead == population.get(crit)){population.remove(crit);}
+							else{population.remove(compare);}
+						}
+					}
+					else if(population.get(crit).energy <= 0){
+						if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
+							moved.add(compare);
+						}
+						population.remove(crit);
+						break;
+					}
+					else if(population.get(compare).energy <= 0){
+						if(!(Ax == population.get(crit).x_coord)&&(By == population.get(crit).y_coord)){		//B changed
+							moved.add(crit);
+						}
+						population.remove(compare);
 					}
 				}
 			}
@@ -352,12 +346,12 @@ public abstract class Critter {
 						if(population.get(moved.get(movedIncr)).energy > 0 && population.get(compare).energy > 0){
 							if(!((Ax ==population.get(moved.get(movedIncr)).x_coord)&&(Ay ==population.get(moved.get(movedIncr)).y_coord)
 									&&(Bx ==population.get(compare).x_coord)&&(By ==population.get(compare).y_coord))){		//someone's position changed
-								if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
-									moved.add(compare);
-								}
 								if(!(Ax == population.get(moved.get(movedIncr)).x_coord)&&(Ay == population.get(moved.get(movedIncr)).y_coord)){		//A changed
 									moved.add(moved.get(movedIncr));
 									break;		//go to the next critter and add to the moved critters to check later
+								}
+								if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
+									moved.add(compare);
 								}
 							}
 							else{		//still in the same position so they need to fight
@@ -366,20 +360,18 @@ public abstract class Critter {
 								else{population.remove(compare);}
 							}
 						}
-						else{
-							if(population.get(compare).energy <= 0){
-								if(!(Ax == population.get(moved.get(movedIncr)).x_coord)&&(By == population.get(moved.get(movedIncr)).y_coord)){		//B changed
-									moved.add(moved.get(movedIncr));
-								}
-								population.remove(compare);
+						else if(population.get(moved.get(movedIncr)).energy <= 0){
+							if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
+								moved.add(compare);
 							}
-							if(population.get(moved.get(movedIncr)).energy <= 0){
-								if(!(Bx == population.get(compare).x_coord)&&(By == population.get(compare).y_coord)){		//B changed
-									moved.add(compare);
-								}
-								population.remove(moved.get(movedIncr));
-								break;
+							population.remove(moved.get(movedIncr));
+							break;
+						}
+						else if(population.get(compare).energy <= 0){
+							if(!(Ax == population.get(moved.get(movedIncr)).x_coord)&&(By == population.get(moved.get(movedIncr)).y_coord)){		//B changed
+								moved.add(moved.get(movedIncr));
 							}
+							population.remove(compare);
 						}
 					}
 				}

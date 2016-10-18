@@ -1,8 +1,8 @@
-/* CRITTERS Critter2.java
+/* CRITTERS Main.java
  * EE422C Project 4 submission by
  * Gina Lu
- * gbl286
- * 16480
+ * <Student1 EID>
+ * <Student1 5-digit Unique No.>
  * Jessica Slaughter
  * jts3329
  * 16470
@@ -27,6 +27,12 @@ public class Critter2 extends Critter {
 	private int dir;
 	private int age;
 	
+	/**
+	 * This method defines Critter2s actions during a time step.
+	 * If its age is over 60, it will walk. Otherwise, it will run if 
+	 * its age is even and reproduce otherwise. It changes direction
+	 * to one of the four diagonals based on its age.
+	 */
 	@Override
 	public void doTimeStep() {
 		if (age > 60) {
@@ -49,6 +55,11 @@ public class Critter2 extends Critter {
 		age++;
 	}
 
+	/**
+	 * This method defines Critter2s actions during a fight.
+	 * If its age is over 60, it will walk away and not fight.
+	 * Otherwise, it will fight.
+	 */
 	@Override
 	public boolean fight(String opponent) {
 		if (age > 60) {
@@ -58,6 +69,11 @@ public class Critter2 extends Critter {
 		return true;
 	}
 	
+	/**
+	 * This method defines and prints the stats for all of the
+	 * Critter2s currently in the population of all Critters.
+	 * @param twos is the list of Critter2s in the population
+	 */
 	public static void runStats(java.util.List<Critter> twos) {
 		int avgAge = 0;
 		int maxAge = 0;
