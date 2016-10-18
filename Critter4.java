@@ -1,4 +1,4 @@
-/* CRITTERS Main.java
+/* CRITTERS Critter4.java
  * EE422C Project 4 submission by
  * Gina Lu
  * gbl286
